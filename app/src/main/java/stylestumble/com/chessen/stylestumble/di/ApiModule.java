@@ -4,8 +4,11 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import stylestumble.com.chessen.stylestumble.BuildConfig;
 
 ;
 
@@ -14,6 +17,17 @@ import retrofit2.converter.gson.GsonConverterFactory;
  */
 @Module
 public class ApiModule {
+
+    @Provides
+    public OkHttpClient provideLoggingCapableHttpClient() {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+
+        logging.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE);
+
+        return new OkHttpClient.Builder()
+                .addInterceptor(logging)
+                .build();
+    }
 
     @Provides
     @Singleton
@@ -25,5 +39,7 @@ public class ApiModule {
                .build();
 
     }
+
+
 
 }

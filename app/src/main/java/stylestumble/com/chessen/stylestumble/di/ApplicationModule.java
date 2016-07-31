@@ -8,6 +8,8 @@ import javax.inject.Singleton;
 import dagger.Module;
 import dagger.Provides;
 import retrofit2.Retrofit;
+import stylestumble.com.chessen.stylestumble.data.ProductsPresenter;
+import stylestumble.com.chessen.stylestumble.data.ProductsPresenterImp;
 import stylestumble.com.chessen.stylestumble.data.ProductsService;
 import stylestumble.com.chessen.stylestumble.data.ProductsServiceImp;
 
@@ -19,8 +21,10 @@ public class ApplicationModule {
 
     private final Application application;
 
+
     public ApplicationModule(Application application) {
         this.application=application;
+
     }
 
     @Provides @Singleton
@@ -31,6 +35,13 @@ public class ApplicationModule {
     @Provides @Singleton
     public ProductsService provideProductsService(Retrofit retrofit){
         return new ProductsServiceImp(retrofit);
+    }
+
+
+    @Provides
+    public ProductsPresenter provideProductsPresenter(ProductsService service){
+        return new ProductsPresenterImp(service);
+
     }
 
 }

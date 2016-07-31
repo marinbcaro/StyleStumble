@@ -1,5 +1,7 @@
 package stylestumble.com.chessen.stylestumble.data;
 
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 
 import retrofit2.Retrofit;
@@ -15,12 +17,13 @@ public class ProductsServiceImp implements ProductsService {
     }
 
     @Override
-    public ArrayList getProducts() {
+    public void getProducts(@NonNull LoadProductsCallback callback) {
 
         ArrayList arrayList=new ArrayList();
         arrayList.add("1");
         arrayList.add("2");
         arrayList.add("3");
-        return arrayList;
+        callback.onProductsLoaded(arrayList);
+
     }
 }
