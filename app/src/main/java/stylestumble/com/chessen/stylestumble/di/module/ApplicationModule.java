@@ -1,4 +1,4 @@
-package stylestumble.com.chessen.stylestumble.di;
+package stylestumble.com.chessen.stylestumble.di.module;
 
 import android.app.Application;
 import android.content.Context;
@@ -7,11 +7,9 @@ import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import retrofit2.Retrofit;
 import stylestumble.com.chessen.stylestumble.data.ProductsPresenter;
 import stylestumble.com.chessen.stylestumble.data.ProductsPresenterImp;
 import stylestumble.com.chessen.stylestumble.data.ProductsService;
-import stylestumble.com.chessen.stylestumble.data.ProductsServiceImp;
 
 /**
  * Created by carolinamarin on 7/23/16.
@@ -32,10 +30,6 @@ public class ApplicationModule {
         return application;
     }
 
-    @Provides @Singleton
-    public ProductsService provideProductsService(Retrofit retrofit){
-        return new ProductsServiceImp(retrofit);
-    }
 
 
     @Provides
@@ -43,5 +37,11 @@ public class ApplicationModule {
         return new ProductsPresenterImp(service);
 
     }
+
+//
+//    @Provides
+//    public ProductsApiService provideProductsApiService(Retrofit retrofit) {
+//        return retrofit.create(ProductsApiService.class);
+//    }
 
 }

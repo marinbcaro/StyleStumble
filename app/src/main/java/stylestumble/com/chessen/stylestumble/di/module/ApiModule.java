@@ -1,6 +1,4 @@
-package stylestumble.com.chessen.stylestumble.di;
-
-import javax.inject.Singleton;
+package stylestumble.com.chessen.stylestumble.di.module;
 
 import dagger.Module;
 import dagger.Provides;
@@ -9,6 +7,8 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import stylestumble.com.chessen.stylestumble.BuildConfig;
+import stylestumble.com.chessen.stylestumble.data.ProductsService;
+import stylestumble.com.chessen.stylestumble.data.ProductsServiceImp;
 
 ;
 
@@ -24,21 +24,34 @@ public class ApiModule {
 
         logging.setLevel(BuildConfig.DEBUG ? HttpLoggingInterceptor.Level.BODY : HttpLoggingInterceptor.Level.NONE);
 
-        return new OkHttpClient.Builder()
+        OkHttpClient okHttpClient= new OkHttpClient.Builder()
                 .addInterceptor(logging)
                 .build();
+        return okHttpClient;
     }
 
     @Provides
-    @Singleton
-    public Retrofit provideRestAdapter(){
+    public Retrofit provideRetrofit(OkHttpClient okHttpClient){
 
-       return new Retrofit.Builder()
+       Retrofit retrofit= new Retrofit.Builder()
                .baseUrl("http://api.shopstyle.com/api/v2/")
                .addConverterFactory(GsonConverterFactory.create())
+               .client(okHttpClient)
                .build();
+        return retrofit;
 
     }
+
+    @Provides
+    public ProductsService provideProductsService(OkHttpClient okHttpClient){
+        return new ProductsServiceImp(provideRetrofit(okHttpClient));
+    }
+
+//
+//    @Provides
+//    public ProductsApiService provideProductsApiService(OkHttpClient okHttpClient) {
+//        return provideRetrofit(okHttpClient).create(ProductsApiService.class);
+//    }
 
 
 
